@@ -27,8 +27,5 @@ def echo_all(message):
 
 if __name__ == "__main__":
     bot.infinity_polling()
-pyTelegramBotAPI==4.10.0
-openai==0.27.0
-worker: python main.py
 
 
