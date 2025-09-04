@@ -1,0 +1,32 @@
+import os
+import telebot
+import openai
+
+# API kalitlar
+TELEGRAM_TOKEN = "7883323935:AAG7OZNx8so63Ivta1wnUn7CyGvZECBL5q8"
+OPENAI_API_KEY = "9a2e9dbab991bd6a45cce95bcc13c6da"
+
+bot = telebot.TeleBot(TELEGRAM_TOKEN)
+openai.api_key = OPENAI_API_KEY
+
+@bot.message_handler(commands=["start", "help"])
+def send_welcome(message):
+    bot.reply_to(message, "Salom! Men ChatGPT asosida ishlaydigan botman. Menga xabar yoz!")
+
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+    try:
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=message.text,
+            max_tokens=150
+        )
+        bot.reply_to(message, response["choices"][0]["text"].strip())
+    except Exception as e:
+        bot.reply_to(message, f"Xatolik: {str(e)}")
+
+if __name__ == "__main__":
+    bot.infinity_polling()
+pyTelegramBotAPI==4.10.0
+openai==0.27.0
+worker: python main.py
